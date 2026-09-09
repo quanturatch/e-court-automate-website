@@ -2,6 +2,8 @@
 
 Public site for **E-Court Automate** (Quantura Technologies). Deploy on **Vercel**.
 
+Page views are stored in a local **SQLite** file: `data/views.sqlite` (table `page_views`). No Redis.
+
 ## Local
 
 ```bash
@@ -14,16 +16,10 @@ Open http://localhost:3060
 
 ## Vercel
 
-1. Push this folder to GitHub (or import the directory in the Vercel dashboard).
-2. Framework: Next.js. Root directory: this folder.
-3. **Page views persist only if you add Upstash Redis** (free):
-   - Create a Redis database at [upstash.com](https://upstash.com)
-   - In Vercel project → Settings → Environment Variables:
-     - `UPSTASH_REDIS_REST_URL`
-     - `UPSTASH_REDIS_REST_TOKEN`
-4. Redeploy.
+1. Import this folder in Vercel (Next.js).
+2. Redeploy.
 
-Without Upstash, the counter still works on your laptop (`data/views.json`) but **resets on each Vercel serverless instance**.
+On Vercel the app filesystem is not durable, so the SQLite file can reset between deploys. For a count that never resets, run this site on a VPS (or keep the same `data/views.sqlite` file). Redis is not required.
 
 ## Footer
 
