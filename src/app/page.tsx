@@ -143,9 +143,15 @@ export default function HomePage() {
               </thead>
               <tbody>
                 <tr>
+                  <td>Help</td>
+                  <td>
+                    <code>run_ecourt help</code>
+                  </td>
+                </tr>
+                <tr>
                   <td>Fetch one case</td>
                   <td>
-                    <code>run_ecourt YOURCNR16CHARS</code>
+                    <code>run_ecourt YOUR CNR16 CHARS</code>
                   </td>
                 </tr>
                 <tr>
@@ -161,13 +167,19 @@ export default function HomePage() {
                   </td>
                 </tr>
                 <tr>
-                  <td>Daily job</td>
+                  <td>Status Check</td>
                   <td>
-                    <code>run_ecourt schedule on</code> · <code>time 07:00</code>
+                    <code>run_ecourt status</code>
                   </td>
                 </tr>
                 <tr>
-                  <td>Trial days</td>
+                  <td>Set Schedule</td>
+                  <td>
+                    <code>run_ecourt schedule time 19:30 (24 Hrs Clock)</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td>License Status</td>
                   <td>
                     <code>run_ecourt license status</code>
                   </td>
@@ -178,9 +190,27 @@ export default function HomePage() {
                     <code>run_ecourt update</code> · <code>uninstall</code>
                   </td>
                 </tr>
+                <tr>
+                  <td>Gmail calendar invites</td>
+                  <td>
+                    <code>run_ecourt calendar on</code> · <code>off</code> ·{" "}
+                    <code>status</code>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
+        </section>
+
+        <section className="section" id="calendar">
+          <p className="kicker">Calendar</p>
+          <h2>Hearings land on the same Gmail calendar</h2>
+          <p className="sub">
+            When a next-hearing date is new or changes, the status email includes a calendar
+            invite (.ics). Gmail can add it to this account’s calendar. Same case updates the
+            same event — it does not create duplicates. All-day, India time, reminder 1 day
+            before. Off: <code>run_ecourt calendar off</code>
+          </p>
         </section>
 
         <section className="section" id="trial">

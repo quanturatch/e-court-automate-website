@@ -37,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <a href="#install">Install</a>
                 <a href="#workflow">Workflow</a>
                 <a href="#trial">Trial</a>
+                <a href="#calendar">Calendar</a>
                 <a href="#support">Support</a>
               </nav>
             </div>
