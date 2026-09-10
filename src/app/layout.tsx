@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  https://www.quanturatech.com
+                  https://www.quanturatech.com | Contact:  +91 94940 37782
                 </a>
               </p>
               <p>
