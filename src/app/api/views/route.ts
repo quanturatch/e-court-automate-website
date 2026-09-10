@@ -5,11 +5,19 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  return NextResponse.json({ count: getViewCount() });
+  try {
+    return NextResponse.json({ count: getViewCount() });
+  } catch {
+    return NextResponse.json({ count: 0 });
+  }
 }
 
 export async function POST(req: NextRequest) {
-  const ua = req.headers.get("user-agent") || "";
-  const count = incrementViewCount(ua);
-  return NextResponse.json({ count });
+  try {
+    const ua = req.headers.get("user-agent") || "";
+    const count = incrementViewCount(ua);
+    return NextResponse.json({ count });
+  } catch {
+    return NextResponse.json({ count: 0 });
+  }
 }

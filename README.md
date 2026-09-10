@@ -19,7 +19,9 @@ Open http://localhost:3060
 1. Import this folder in Vercel (Next.js).
 2. Redeploy.
 
-On Vercel the app filesystem is not durable, so the SQLite file can reset between deploys. For a count that never resets, run this site on a VPS (or keep the same `data/views.sqlite` file). Redis is not required.
+Counts are stored in SQLite (`data/views.sqlite`) when that file is writable (local / a VPS). On **Vercel** the app disk is read-only, so the same table is kept under `/tmp` (or a JSON file if SQLite cannot load). Redis is not used.
+
+Redeploy after pulling this change so the footer shows a number instead of “…”.
 
 ## Footer
 

@@ -11,15 +11,29 @@ export function ViewsProvider({ children }: { children: React.ReactNode }) {
     let cancelled = false;
     const already = sessionStorage.getItem("ecourt-pv");
     const method = already ? "GET" : "POST";
-    fetch("/api/views", { method })
-      .then((r) => r.json())
-      .then((d: { count?: number }) => {
+
+    (async () => {
+      try {
+        const r = await fetch("/api/views", { method, cache: "no-store" });
+        const d = (await r.json()) as { count?: number };
         if (!cancelled && typeof d.count === "number") {
           sessionStorage.setItem("ecourt-pv", "1");
           setCount(d.count);
+          return;
         }
-      })
-      .catch(() => {});
+      } catch {
+        /* fall through */
+      }
+      try {
+        const r = await fetch("/api/views", { method: "GET", cache: "no-store" });
+        const d = (await r.json()) as { count?: number };
+        if (!cancelled && typeof d.count === "number") setCount(d.count);
+        else if (!cancelled) setCount(0);
+      } catch {
+        if (!cancelled) setCount(0);
+      }
+    })();
+
     return () => {
       cancelled = true;
     };
