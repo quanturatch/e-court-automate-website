@@ -18,7 +18,7 @@ export default function CopyCommand({ text }: { text: string }) {
   return (
     <div className="cmd">
       <code>{text}</code>
-      <button className="copy" type="button" onClick={copy}>
+      <button className="copy" type="button" data-track-copy="1" onClick={copy}>
         {ok ? "Copied" : "Copy"}
       </button>
     </div>

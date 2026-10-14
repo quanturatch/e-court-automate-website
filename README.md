@@ -2,7 +2,10 @@
 
 Public site for **E-Court Automate** (Quantura Technologies). Deploy on **Vercel**.
 
-Page views are stored in a local **SQLite** file: `data/views.sqlite` (table `page_views`). No Redis.
+Footer shows **page views** and **how many people copied the installer**. Those counts persist:
+
+- **Local:** `data/stats.json`
+- **Vercel:** a durable remote counter (survives deploys; `/tmp` SQLite does not)
 
 ## Local
 
@@ -17,12 +20,10 @@ Open http://localhost:3060
 ## Vercel
 
 1. Import this folder in Vercel (Next.js).
-2. Redeploy.
+2. Redeploy after pulling this change.
 
-Counts are stored in SQLite (`data/views.sqlite`) when that file is writable (local / a VPS). On **Vercel** the app disk is read-only, so the same table is kept under `/tmp` (or a JSON file if SQLite cannot load). Redis is not used.
-
-Redeploy after pulling this change so the footer shows a number instead of “…”.
+The footer must show numbers after that deploy (not “…”, not a reset to zero on every push).
 
 ## Footer
 
-Links to [https://www.quanturatech.com](https://www.quanturatech.com) and shows total page views.
+Links to [https://www.quanturatech.com](https://www.quanturatech.com), contact +91 94940 37782, page views, and installer copies.

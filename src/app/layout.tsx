@@ -1,68 +1,36 @@
 import type { Metadata } from "next";
-import { Cinzel, DM_Sans } from "next/font/google";
+import { ViewsProvider } from "@/components/ViewsProvider";
+import { getStats } from "@/lib/stats";
 import "./globals.css";
-import { ViewsProvider, ViewLabel } from "@/components/ViewsProvider";
 
-const serif = Cinzel({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
-});
-
-const sans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "E-Court Automate — Quantura Technologies",
+  title: "E-Court Automate — Legal Case Monitoring & Automation",
   description:
-    "Windows software that looks up Indian eCourts cases by CNR, emails hearing status, and installs with one command. 15-day trial.",
+    "E-Court Automate helps advocates, chambers, law firms and legal teams monitor Indian eCourts cases using CNR numbers, automate status alerts, and keep hearings organized. 60-day trial.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  let initial = { views: 0, copies: 0 };
+  try {
+    initial = await getStats();
+  } catch {
+    /* keep zeros */
+  }
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable}`}>
+    <html lang="en">
+      <head>
+        <meta name="theme-color" content="#02050b" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800;900&family=Josefin+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
-        <ViewsProvider>
-          <header className="site">
-            <div className="wrap row">
-              <a className="brand" href="/">
-                <img src="/mark.png" alt="E-Court Automate" />
-                <span>E-Court Automate</span>
-              </a>
-              <nav>
-                <a href="#product">Product</a>
-                <a href="#install">Install</a>
-                <a href="#workflow">Workflow</a>
-                <a href="#trial">Trial</a>
-                <a href="#calendar">Calendar</a>
-                <a href="#support">Support</a>
-              </nav>
-            </div>
-          </header>
-          {children}
-          <footer className="site">
-            <div className="wrap">
-              <img src="/mark.png" alt="E-Court Automate" />
-              <p>Developed by Quantura Technologies</p>
-              <p>
-                <a
-                  className="site-link"
-                  href="https://www.quanturatech.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  https://www.quanturatech.com | Contact:  +91 94940 37782
-                </a>
-              </p>
-              <p>
-                Total <ViewLabel />
-              </p>
-            </div>
-          </footer>
-        </ViewsProvider>
+        <ViewsProvider initial={initial}>{children}</ViewsProvider>
       </body>
     </html>
   );

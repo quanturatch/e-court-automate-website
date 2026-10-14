@@ -8,3 +8,4 @@ data/*.sqlite-*
 data/views.json
 *.log
 .DS_Store
+temp.html
