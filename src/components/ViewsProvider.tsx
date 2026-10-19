@@ -125,6 +125,7 @@ export function ViewsProvider({
   useEffect(() => {
     function isCopyControl(el: Element | null): el is HTMLElement {
       if (!el || !(el instanceof HTMLElement)) return false;
+      if (el.closest("[data-opens-disclaimer]")) return false;
       if (el.closest("[data-track-copy], .copy-command, button.copy")) return true;
       const tag = el.closest("button, a, [role='button']");
       if (!tag) return false;

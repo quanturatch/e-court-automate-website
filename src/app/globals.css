@@ -1468,6 +1468,62 @@ footer .stats { margin-top: 10px; color: var(--text, #f4efe4); font-size: 0.9rem
 
     .page-view.active{animation:pageIn .55s cubic-bezier(.16,1,.3,1) both}
 
+    .ack-backdrop{
+      position:fixed;inset:0;z-index:500;display:grid;place-items:center;padding:24px;
+      background:rgba(2,5,11,.74);backdrop-filter:blur(8px)
+    }
+    .ack-dialog{
+      width:min(540px,100%);max-width:calc(100vw - 32px);max-height:calc(100vh - 32px);
+      overflow:auto;padding:28px 26px 22px;border-radius:22px;
+      border:1px solid rgba(196,160,86,.32);
+      background:linear-gradient(165deg,#121b2e,#07111c 58%,#0b1424);
+      box-shadow:0 30px 80px rgba(0,0,0,.55);color:var(--text)
+    }
+    .ack-kicker{
+      color:#e4c36a;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase
+    }
+    .ack-dialog h2{
+      font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.6rem,3vw,2.1rem);
+      font-weight:500;letter-spacing:-.03em;line-height:1.1;margin:8px 0 16px;color:#f3ead8
+    }
+    .ack-points{list-style:none;display:grid;gap:8px;margin:0 0 16px}
+    .ack-points li{
+      padding:11px 13px;border-radius:12px;border:1px solid rgba(196,160,86,.16);
+      background:rgba(255,255,255,.03);color:#d7e0ec;font-size:.95rem
+    }
+    .ack-check{
+      display:flex;gap:12px;align-items:flex-start;padding:12px 13px;border-radius:12px;
+      border:1px solid rgba(196,160,86,.28);background:rgba(196,160,86,.06);cursor:pointer
+    }
+    .ack-check input{width:18px;height:18px;margin-top:2px;accent-color:#c4a056;flex:none;cursor:pointer}
+    .ack-check span{color:#f4efe4;font-size:.95rem;font-weight:650}
+    .ack-line{
+      margin-top:14px;padding:12px 13px;border-radius:12px;background:#080611;
+      border:1px solid rgba(228,195,106,.18);user-select:none;min-width:0;overflow:hidden
+    }
+    .ack-line span{
+      display:block;margin-bottom:6px;color:#8c7d94;font-size:.67rem;font-weight:800;
+      letter-spacing:.12em;text-transform:uppercase
+    }
+    .ack-line code{
+      display:block;color:#e6dbbe;font:600 .78rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      white-space:normal;overflow-wrap:anywhere
+    }
+    .ack-line.is-ready{user-select:text}
+    .ack-error{margin-top:12px;color:#e38b98;font-size:.88rem}
+    .ack-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .ack-dialog .btn:disabled,
+    .ack-dialog .btn:disabled:hover{
+      opacity:.42;cursor:not-allowed;transform:none;box-shadow:none
+    }
+    .ack-dialog .btn:disabled::after{display:none}
+    @media(max-width:640px){
+      .ack-backdrop{padding:16px}
+      .ack-dialog{padding:22px 16px 16px}
+      .ack-actions{flex-direction:column}
+      .ack-actions .btn{width:100%}
+    }
+
     details summary{transition:color .2s ease}
     details[open]{animation:detailsOpen .35s ease both}
 

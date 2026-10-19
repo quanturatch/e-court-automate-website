@@ -63,7 +63,7 @@ function parsePage(hash: string): Page {
 }
 
 export default function Site() {
-  const { views, copies } = useStats();
+  const { views, copies, recordCopy } = useStats();
   const downloads = shownDownloads(copies);
   const viewsShown = views ?? 0;
 
@@ -71,6 +71,11 @@ export default function Site() {
   const [navOpen, setNavOpen] = useState(false);
   const [tab, setTab] = useState("advocate");
   const [copied, setCopied] = useState(false);
+  const [disclaimerOpen, setDisclaimerOpen] = useState(false);
+  const [acked, setAcked] = useState(false);
+  const [copyError, setCopyError] = useState(false);
+  const copyBtnRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [cnr, setCnr] = useState("");
   const [preview, setPreview] = useState("");
   const [booted, setBooted] = useState(false);
@@ -166,15 +171,73 @@ export default function Site() {
     prevDownloads.current = downloads;
   }, [downloads]);
 
+  function openDisclaimer() {
+    setAcked(false);
+    setCopyError(false);
+    setDisclaimerOpen(true);
+  }
+
+  function closeDisclaimer() {
+    setDisclaimerOpen(false);
+    setAcked(false);
+    setCopyError(false);
+  }
+
   async function copyInstall() {
+    if (!acked) return;
     try {
       await navigator.clipboard.writeText(INSTALL);
+      recordCopy();
+      setCopyError(false);
       setCopied(true);
+      setDisclaimerOpen(false);
+      setAcked(false);
       window.setTimeout(() => setCopied(false), 1500);
     } catch {
       setCopied(false);
+      setCopyError(true);
     }
   }
+
+  useEffect(() => {
+    if (!disclaimerOpen) return;
+    const dialog = dialogRef.current;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog?.querySelector<HTMLElement>("#ack-cnr")?.focus();
+
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setDisclaimerOpen(false);
+        setAcked(false);
+        setCopyError(false);
+        return;
+      }
+      if (e.key !== "Tab" || !dialog) return;
+      const items = Array.from(
+        dialog.querySelectorAll<HTMLElement>("button:not([disabled]), input, a[href]")
+      );
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && (active === first || !dialog.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      copyBtnRef.current?.focus();
+    };
+  }, [disclaimerOpen]);
 
   function showPreview(e?: FormEvent) {
     e?.preventDefault();
@@ -581,10 +644,13 @@ export default function Site() {
                       <div className="install-command">
                         <code>{INSTALL}</code>
                         <button
+                          ref={copyBtnRef}
                           className="copy-command"
                           type="button"
-                          data-track-copy="1"
-                          onClick={copyInstall}
+                          data-opens-disclaimer="1"
+                          aria-haspopup="dialog"
+                          aria-expanded={disclaimerOpen}
+                          onClick={openDisclaimer}
                         >
                           {copied ? "COPIED ✓" : "COPY"}
                         </button>
@@ -1313,6 +1379,60 @@ export default function Site() {
           </div>
         </div>
       </footer>
+
+      {disclaimerOpen && (
+        <div className="ack-backdrop" onClick={closeDisclaimer}>
+          <div
+            ref={dialogRef}
+            className="ack-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ack-title"
+            aria-describedby="ack-points"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="ack-kicker">Before you copy</p>
+            <h2 id="ack-title">Read this disclaimer</h2>
+            <ul className="ack-points" id="ack-points">
+              <li>This is not an official app by eCourts.</li>
+              <li>This is an app from Quantura Technologies.</li>
+              <li>The app is totally offline.</li>
+              <li>We are not storing any CNR in our database.</li>
+            </ul>
+            <label className="ack-check" htmlFor="ack-cnr">
+              <input
+                id="ack-cnr"
+                type="checkbox"
+                checked={acked}
+                onChange={(e) => setAcked(e.target.checked)}
+              />
+              <span>I acknowledge the statements above.</span>
+            </label>
+            <div className={`ack-line${acked ? " is-ready" : ""}`} onCopy={(e) => { if (!acked) e.preventDefault(); }}>
+              <span>Install line</span>
+              <code>{INSTALL}</code>
+            </div>
+            {copyError && (
+              <p className="ack-error" role="alert">
+                The browser blocked automatic copy. The install line above can be selected now that you have acknowledged.
+              </p>
+            )}
+            <div className="ack-actions">
+              <button className="btn btn-ghost" type="button" onClick={closeDisclaimer}>
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                type="button"
+                disabled={!acked}
+                onClick={copyInstall}
+              >
+                Copy install line
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
