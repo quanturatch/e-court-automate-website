@@ -2,7 +2,7 @@
 
 Public site for **E-Court Automate** (Quantura Technologies). Deploy on **Vercel**.
 
-Footer shows **page views** and **how many people copied the installer**. Those counts persist:
+Footer shows **how many people copied the installer**. Those counts persist:
 
 - **Local:** `data/stats.json`
 - **Vercel:** a durable remote counter (survives deploys; `/tmp` SQLite does not)
@@ -26,4 +26,4 @@ The footer must show numbers after that deploy (not “…”, not a reset to ze
 
 ## Footer
 
-Links to [https://www.quanturatech.com](https://www.quanturatech.com), contact +91 94940 37782, page views, and installer copies.
+Links to [https://www.quanturatech.com](https://www.quanturatech.com), contact +91 94940 37782,  and installer copies.

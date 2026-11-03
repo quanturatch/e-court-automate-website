@@ -1373,7 +1373,7 @@ export default function Site() {
           </div>
           <div className="copyright">
             <span>
-              © {year} Quantura Technologies · {viewsShown.toLocaleString("en-IN")} page views
+              © {year} Quantura Technologies · {viewsShown.toLocaleString("en-IN")}
             </span>
             <span>Windows · 60-day trial · +91 94940 37782</span>
           </div>

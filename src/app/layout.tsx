@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { ViewsProvider } from "@/components/ViewsProvider";
 import { getStats } from "@/lib/stats";
 import "./globals.css";
@@ -31,6 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <ViewsProvider initial={initial}>{children}</ViewsProvider>
+        <Analytics />
       </body>
     </html>
   );
